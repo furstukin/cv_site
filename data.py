@@ -1,4 +1,4 @@
-nato_code = {'A': 'Alfa',
+NATO_CODE = {'A': 'Alfa',
              'B': 'Bravo',
              'C': 'Charlie',
              'D': 'Delta',
@@ -25,7 +25,7 @@ nato_code = {'A': 'Alfa',
              'Y': 'Yankee',
              'Z': 'Zulu'}
 
-morse_code = {
+MORSE_CODE = {
     'A': '•-',
     'B': '-•••',
     'C': '-•-•',
@@ -81,7 +81,21 @@ morse_code = {
     ' ': ' '
     }
 
-braille_code = {
+MORSE_AUDIO_DICT = {
+    'a': 'a', 'b': 'b', 'c': 'c', 'd': 'd', 'e': 'e', 'f': 'f',
+    'g': 'g', 'h': 'h', 'i': 'i', 'j': 'j', 'k': 'k', 'l': 'l',
+    'm': 'm', 'n': 'n', 'o': 'o', 'p': 'p', 'q': 'q', 'r': 'r',
+    's': 's', 't': 't', 'u': 'u', 'v': 'v', 'w': 'w', 'x': 'x',
+    'y': 'y', 'z': 'z', '1': '1', '2': '2', '3': '3',
+    '4': '4', '5': '5', '6': '6', '7': '7', '8': '8',
+    '9': '9', '0': '0', ' ': 'space', '.': 'period', ',': 'comma',
+    '?': 'question', ':': 'colon', ';': 'semicolon', "'": 'apostrophe',
+    '"': 'quote','(': 'lparenthesis', ')': 'rparenthesis', '/': 'divide',
+    '-': 'minus', '=': 'equal', '+': 'plus', '!': 'exclamation',
+    '×': 'multiply', '@': 'atsign',
+}
+
+BRAILLE = {
     'a': '⠁',
     'b': '⠃',
     'c': '⠉',
@@ -125,10 +139,16 @@ braille_code = {
     '!': '⠖',
     '"': '⠦',
     '-': '⠤',
+    '=': '⠐⠶',
+    '+': '⠬',
     "'": '⠄',
     ';': '⠆',
     ':': '⠒',
     '(': '⠷',
-    ')': '⠾'
+    ')': '⠾',
+    '/': '⠌',
+    '@': '⠈',
+    '*': '⠡',
+    '×': '⠰'
 }
 

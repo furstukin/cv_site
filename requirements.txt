@@ -25,3 +25,8 @@ dotenv==0.9.9
 gunicorn==23.0.0
 psycopg2==2.9.10
 bleach==6.2.0
+requests~=2.32.3
+Flask-Bootstrap~=3.3.7.1
+python-dotenv~=1.1.0
+numpy~=2.2.4
+playsound~=1.2.2
