@@ -1,0 +1,162 @@
+<!DOCTYPE HTML>
+<!--
+	Reflex by Pixelarity
+	pixelarity.com | hello@pixelarity.com
+	License: pixelarity.com/license
+-->
+<html>
+	<head>
+		<title>Morse Code Audio Generator</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="static/assets/css/main.css" />
+	</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<header id="header">
+				<nav>
+					<ul>
+						<li><a href="#menu">Menu</a></li>
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Menu -->
+			<nav id="menu">
+				<h2>Menu</h2>
+				<ul class="links">
+					<li><a href="index.html">Home</a></li>
+					<li><a href="generic.html">Ipsum veroeros</a></li>
+					<li><a href="generic.html">Tempus etiam</a></li>
+					<li><a href="generic.html">Consequat dolor</a></li>
+					<li><a href="elements.html">Elements</a></li>
+				</ul>
+				<ul class="actions stacked">
+					<li><a href="#" class="button fit primary">Get Started</a></li>
+					<li><a href="#" class="button fit">Log In</a></li>
+				</ul>
+			</nav>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<section id="main" class="wrapper style1">
+						<div class="inner">
+							<header class="major">
+								<h1>Morse Code</h1>
+								<p>Convert any text into audible Morse Code</p>
+							</header>
+							<span class="image main"><img src="static/images/morse_machine.jpeg" alt="picture of a morse code machine" /></span>
+							<section>
+								<h2>Morse Code Converter</h2>
+								<form method="post" action="/morse">
+									<div class="col-12">
+    									<textarea name="text-to-convert" id="morse-text"
+												  placeholder="Enter text to convert to audible Morse code"
+												  rows="3"></textarea>
+									</div>
+									<p></p>
+									<div class="col-12">
+										<ul class="actions">
+											<li><input type="submit" value="Convert Message" class="primary" /></li>
+										</ul>
+									</div>
+									<div class="col-6 col-12-xsmall">
+										<input type="text" name="morse" id="morse-text" value="{{ morse_sentence }}" placeholder="Morse Conversion" />
+									</div>
+									<div class="col-6 col-12-xsmall">
+										<input type="text" name="nato" id="nato-text" value="{{ nato_sentence }}" placeholder="NATO Conversion" />
+									</div>
+									<div class="col-6 col-12-xsmall">
+										<input type="text" name="braille" id="braille-text" value="{{ braille_sentence }}" placeholder="Braille Conversion" />
+									</div>
+								</form>
+							</section>
+
+							<script>
+								// Save scroll position before unloading
+								window.addEventListener('beforeunload', () => {
+									localStorage.setItem('scrollPosition', window.scrollY);
+								});
+
+								// Restore scroll position on page load
+								window.addEventListener('load', () => {
+									const scrollPosition = localStorage.getItem('scrollPosition');
+									if (scrollPosition) {
+										window.scrollTo(0, parseInt(scrollPosition));
+										localStorage.removeItem('scrollPosition'); // Clean up
+									}
+								});
+							</script>
+
+							<p>Morse code was developed by Samuel Morse and Alfred Vail, not just Samuel Morse
+								as is commonly thought, in the 1840's. On May 24, 1844, they sent the first message
+								"What hath God wrought," which is a quote from the Bible. Morse code
+								revolutionized communication by enabling rapid transmission of messages over long
+								distances using dots and dashes. And experienced operators could translate upto 40
+								words per minute.</p>
+							<p>The first successful transatlantic telegraph cable, enabling world-wide Morse code
+								communication, was laid in 1866. An earlier attempt was made in 1858, but failed
+								when the cable snapped. Although that cable has long since been decommissioned,
+								Morse code is still used today, particularly in amateur radio for identifying
+								repeaters and in the Automatic Transmitter Identification System (ATIS) for
+								identifying uplink sources of analog satellite transmissions.</p>
+							<p><b>FUN FACTS:</b></p>
+							<p>143 means "I love you" in Morse Code.</p>
+							<p>The telegraph became wireless, which saved 700 lives on the Titanic. The ship was
+								outfitted with the best wireless equipment available. And just after impacting the
+								iceberg, radio operator Harold Cottam, sent a message that reached another ship,
+								the Carpathia, just 60 miles away.
+							</p>
+							<p>Morse code is not universal and there are several versions in use. This app uses
+								the international Morse code, which differs quite a lot from the American version.
+							</p>
+						</div>
+					</section>
+
+				<!-- Footer -->
+					<section id="footer" class="wrapper split style2">
+						<div class="inner">
+							<section>
+								<header>
+									<h3>Magna lorem ipsum</h3>
+								</header>
+								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis dapibus rutrum facilisis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos magna fames ac turpis egestas amet non lorem amet.</p>
+								<ul class="icons">
+									<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+									<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+									<li><a href="#" class="icon brands fa-snapchat-ghost"><span class="label">Snapchat</span></a></li>
+									<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></l
+								</ul>
+							</section>
+							<section>
+								<form method="post" action="#">
+									<div class="fields">
+										<div class="field half"><input type="text" name="name" id="name" placeholder="Name" /></div>
+										<div class="field half"><input type="email" name="email" id="email" placeholder="Email" /></div>
+										<div class="field"><textarea name="message" id="message" placeholder="Message" rows="4"></textarea></div>
+									</div>
+									<ul class="actions">
+										<li><input type="submit" value="Send Message" /></li>
+									</ul>
+								</form>
+							</section>
+						</div>
+						<div class="copyright">
+							<p>&copy; Untitled. All rights reserved. Lorem ipsum dolor sit amet nullam.</p>
+						</div>
+					</section>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="static/assets/js/jquery.min.js"></script>
+			<script src="static/assets/js/browser.min.js"></script>
+			<script src="static/assets/js/breakpoints.min.js"></script>
+			<script src="static/assets/js/util.js"></script>
+			<script src="static/assets/js/main.js"></script>
+
+	</body>
+</html>
