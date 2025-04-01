@@ -1,0 +1,12 @@
+[system]
+packages = ["ffmpeg"]
+
+[python]
+version = "3.12"
+install_poetry = false
+
+[build]
+entrypoint = "gunicorn main:app --bind 0.0.0.0:8080"
+
+[files]
+paths = ["requirements.txt", "static/", "main.py"]
