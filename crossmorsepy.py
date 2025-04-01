@@ -1,6 +1,9 @@
 from data import MORSE_AUDIO_DICT
 import subprocess
 import time
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 class MorseAudio:
     @classmethod
@@ -9,8 +12,7 @@ class MorseAudio:
             if char in MORSE_AUDIO_DICT:
                 m_char = MORSE_AUDIO_DICT[char]
                 audio_file = f'static/audio/morse_code/32-bit/{m_char}.mp3'
-                # Use FFmpeg to play the audio file
-                print(f"Playing audio file: {m_char}.mp3") # Debug testing
+                logging.debug(f"Playing audio file: {m_char}.mp3") # Debug testing
                 subprocess.run(["ffplay", "-nodisp", "-autoexit", audio_file], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
                 time.sleep(0.05)  # Short delay after playback
             time.sleep(0.1)  # Delay between characters
