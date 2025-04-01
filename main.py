@@ -22,7 +22,6 @@ Bootstrap4(app)
 
 @app.route("/")
 def home():
-    print("Home route accessed")  # Debug log
     return render_template("index.html")
 
 @app.route('/morse', methods=['POST', 'GET'])
