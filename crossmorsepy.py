@@ -13,6 +13,7 @@ class MorseAudio:
                 m_char = MORSE_AUDIO_DICT[char]
                 audio_file = f'static/audio/morse_code/32-bit/{m_char}.mp3'
                 logging.debug(f"Playing audio file: {m_char}.mp3") # Debug testing
+                print(f"Playing audio file: {mp3_file}", flush=True)
                 subprocess.run(["ffplay", "-nodisp", "-autoexit", audio_file], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
                 time.sleep(0.05)  # Short delay after playback
             time.sleep(0.1)  # Delay between characters
