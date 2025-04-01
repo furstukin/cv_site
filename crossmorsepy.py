@@ -7,10 +7,6 @@ import platform
 
 logging.basicConfig(level=logging.DEBUG)
 
-import subprocess
-import platform
-import os
-
 def get_ffmpeg_path():
     try:
         # Dynamically locate ffmpeg path

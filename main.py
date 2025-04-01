@@ -12,9 +12,16 @@ from crossmorsepy import MorseAudio
 from data import NATO_CODE, MORSE_CODE, BRAILLE
 from dotenv import load_dotenv
 import os
+import subprocess
 
 load_dotenv()
 morse_audio = MorseAudio()
+
+def install_ffmpeg():
+    subprocess.run(["apt-get", "update"])
+    subprocess.run(["apt-get", "install", "-y", "ffmpeg"])
+
+install_ffmpeg()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('CSRF_TOKEN')
