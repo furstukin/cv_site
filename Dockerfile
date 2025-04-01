@@ -4,7 +4,6 @@ FROM python:3.12-slim
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     libglib2.0-0 \
-    libgthread-2.0-0 \
     libsdl2-mixer-2.0-0 \
     libsdl2-2.0-0 \
     && apt-get clean
