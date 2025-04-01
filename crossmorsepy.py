@@ -1,18 +1,15 @@
 from data import MORSE_AUDIO_DICT
-import pygame
+import subprocess
 import time
 
 class MorseAudio:
     @classmethod
     def play_audio(cls, text_to_encode: str):
-        pygame.mixer.init(frequency=22050)  # Initialize the Pygame mixer
         for char in text_to_encode.lower():
             if char in MORSE_AUDIO_DICT:
                 m_char = MORSE_AUDIO_DICT[char]
                 audio_file = f'static/audio/morse_code/32-bit/{m_char}.mp3'
-                pygame.mixer.music.load(audio_file)
-                pygame.mixer.music.play()
-                while pygame.mixer.music.get_busy():
-                    time.sleep(0.25)  # Wait for audio to finish playing
-            time.sleep(0.1)
-
+                # Use FFmpeg to play the audio file
+                subprocess.run(["ffplay", "-nodisp", "-autoexit", audio_file], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                time.sleep(0.05)  # Short delay after playback
+            time.sleep(0.1)  # Delay between characters
