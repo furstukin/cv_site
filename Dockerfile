@@ -3,6 +3,7 @@ FROM python:3.12-slim
 
 # Install FFmpeg for audio processing
 RUN apt-get update && apt-get install -y ffmpeg
+RUN apt-get update && apt-get install -y fs
 
 # Set the working directory
 WORKDIR /app
