@@ -20,6 +20,13 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Install necessary PostgreSQL development libraries
 RUN apt-get update && apt-get install -y libpq-dev
 
+# Add ASLA virtual audio device
+RUN apt-get update && apt-get install -y alsa-utils
+
+# Configure ASLA
+RUN echo "pcm.!default { type hw card 0 }" > /etc/asound.conf
+RUN echo "ctl.!default { type hw card 0 }" >> /etc/asound.conf
+
 # Expose the port
 EXPOSE 8080
 
