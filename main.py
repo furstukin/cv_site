@@ -17,11 +17,21 @@ import subprocess
 load_dotenv()
 morse_audio = MorseAudio()
 
-def install_ffmpeg():
-    subprocess.run(["apt-get", "update"])
-    subprocess.run(["apt-get", "install", "-y", "ffmpeg"])
 
-install_ffmpeg()
+def verify_ffmpeg_installation():
+    try:
+        # Check if ffmpeg is installed and accessible
+        result = subprocess.check_output(["which", "ffmpeg"]).decode().strip()
+        print(f"FFmpeg path: {result}", flush=True)
+
+        # Log ffmpeg version
+        version = subprocess.check_output(["ffmpeg", "-version"]).decode().strip()
+        print(f"FFmpeg version:\n{version}", flush=True)
+    except subprocess.CalledProcessError:
+        print("FFmpeg is not installed or accessible in the environment.", flush=True)
+
+
+verify_ffmpeg_installation()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('CSRF_TOKEN')
