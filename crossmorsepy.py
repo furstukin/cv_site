@@ -7,19 +7,25 @@ import platform
 
 logging.basicConfig(level=logging.DEBUG)
 
+import subprocess
+import platform
+import os
+
 def get_ffmpeg_path():
     try:
-        # Check for ffplay
+        # Dynamically locate ffmpeg path
         if platform.system() == "Windows":
-            ffplay_path = subprocess.check_output(["where", "ffplay"]).decode().strip()
+            # Use `where` on Windows
+            ffmpeg_path = subprocess.check_output(["where", "ffmpeg"]).decode().strip()
         else:
-            ffplay_path = subprocess.check_output(["which", "ffplay"]).decode().strip()
+            # Use `which` on Unix-based systems
+            ffmpeg_path = subprocess.check_output(["which", "ffmpeg"]).decode().strip()
 
-        logging.info(f"FFplay path: {ffplay_path}")
-        return ffplay_path
+        print(f"FFmpeg path: {ffmpeg_path}", flush=True)
+        return ffmpeg_path
     except subprocess.CalledProcessError:
-        logging.error("FFplay is not installed or not in PATH. Please install FFmpeg with FFplay support.")
-        raise RuntimeError("FFplay is required to play audio.")
+        # Fallback or error message
+        raise RuntimeError("FFmpeg is required but not found in PATH.")
 
 class MorseAudio:
     @classmethod
