@@ -17,6 +17,9 @@ COPY . .
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Install necessary PostgreSQL development libraries
+RUN apt-get update && apt-get install -y libpq-dev
+
 # Expose the port
 EXPOSE 8080
 
