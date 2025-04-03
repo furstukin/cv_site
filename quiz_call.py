@@ -30,6 +30,7 @@ class QuizCall:
         grouped_questions = []  # Create a list to store grouped question dictionaries
         index = 0
 
+        print(quiz_data)
         for question in question_data:
             index += 1
             question_text = html.unescape(question["question"])
@@ -49,4 +50,5 @@ class QuizCall:
                 "answers": answers,
                 "correct": correct_answer
             })
+        print(grouped_questions)
         return grouped_questions
