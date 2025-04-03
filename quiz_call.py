@@ -2,21 +2,33 @@ import requests
 import html
 import random
 
+from unicodedata import category
+
+
 class QuizCall:
-    def __init__(self, question_count, category, difficulty, question_style):
-        self.question_count = question_count
-        self.category = category
+    def __init__(self, q_count, q_category, difficulty, q_style):
+        self.q_count = q_count
+        self.category = q_category
         self.difficulty = difficulty
-        self.question_style = question_style
+        self.q_style = q_style
 
     def api_call(self):
         # API request for trivia questions
-        quiz_parameters = {
-            'amount': self.question_count,
-            'category': self.category,
-            'difficulty': self.difficulty,
-            'type': self.question_style
-        }
+        if self.category != 'any':
+            quiz_parameters = {
+                'amount': self.q_count,
+                'category': self.category,
+                'difficulty': self.difficulty,
+                'type': self.q_style
+            }
+        else:
+            quiz_parameters = {
+                'amount': self.q_count,
+                'difficulty': self.difficulty,
+                'type': self.q_style
+            }
+
+        print(quiz_parameters)
         quiz_data = requests.get(url="https://opentdb.com/api.php", params=quiz_parameters)
         quiz_data.raise_for_status()
         question_data = quiz_data.json()["results"]
@@ -30,7 +42,7 @@ class QuizCall:
         grouped_questions = []  # Create a list to store grouped question dictionaries
         index = 0
 
-        print(quiz_data)
+        print(question_data)
         for question in question_data:
             index += 1
             question_text = html.unescape(question["question"])

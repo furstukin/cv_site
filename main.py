@@ -57,11 +57,17 @@ def trivia():
 def start_quiz():
     if request.method == 'POST':
         # Get parameters for API call
-        category = TRIVIA_CATEGORIES[request.form['category']]
-        question_count = request.form['question-count']
+        if request.form['category'] == "":
+            q_category = 'any'
+        else:
+            q_category = TRIVIA_CATEGORIES[request.form['category']]
+        if request.form['question-count'] == "":
+            question_count = 10
+        else:
+            question_count = request.form['question-count']
         difficulty = TRIVIA_DIFFICULTY[request.form['difficulty']]
         question_style = TRIVIA_TYPE[request.form['question-style']]
-        quiz_call = QuizCall(question_count, category, difficulty, question_style)
+        quiz_call = QuizCall(q_count=question_count, q_category=q_category, difficulty=difficulty, q_style=question_style)
         api_call = quiz_call.api_call()
 
         # Check response and return error if response is 1
