@@ -12,7 +12,6 @@ from wtforms.validators import DataRequired, NumberRange
 import requests
 from crossmorsepy import MorseAudio
 from data import NATO_CODE, MORSE_CODE, BRAILLE, TRIVIA_CATEGORIES, TRIVIA_TYPE, TRIVIA_DIFFICULTY, TRIVIA_QUESTION_COUNT
-from question_model import Question
 from quiz_brain import QuizBrain
 from dotenv import load_dotenv
 import os
@@ -54,15 +53,15 @@ def morse():
 def trivia():
     return render_template('trivia.html', categories=TRIVIA_CATEGORIES, difficulties=TRIVIA_DIFFICULTY, type=TRIVIA_TYPE, q_count=TRIVIA_QUESTION_COUNT)
 
-@app.route('/quiz', methods=['GET', 'POST'])
-def quiz():
+@app.route('/start_quiz', methods=['POST'])
+def start_quiz():
     if request.method == 'POST':
         # Get parameters for API call
         category = TRIVIA_CATEGORIES[request.form['category']]
         question_count = request.form['question-count']
         difficulty = TRIVIA_DIFFICULTY[request.form['difficulty']]
         question_style = TRIVIA_TYPE[request.form['question-style']]
-        quiz_call = QuizCall(category, question_count, difficulty, question_style)
+        quiz_call = QuizCall(question_count, category, difficulty, question_style)
         api_call = quiz_call.api_call()
 
         # Check response and return error if response is 1
@@ -75,19 +74,51 @@ def quiz():
         grouped_questions = api_call  # Create a list to store grouped question dictionaries
         index = 0
 
-        # Set session value to ensure form was submitted
-        session['trivia_form_submitted'] = True  # Set the flag
+        quiz_brain = QuizBrain(grouped_questions)
+
+        # Serialize QuizBrain attributes
+        session['quiz_brain'] = quiz_brain.serialize()
+
         flash("Your trivia quiz has been generated. Good luck!", "info")
+        return redirect(url_for('quiz', first_load=True))
 
-        #  Add a loop to send one question at a time to the html
-        #  Update quiz.html to remove for loops? may not be needed...
-        return render_template('quiz.html', grouped_questions=grouped_questions)
 
-    elif request.method == 'GET':
-        # Check if the form has been submitted, otherwise redirect
-        if not session.get('trivia_form_submitted'):
-            flash("You must complete the trivia setup first!", "danger")
+@app.route('/quiz', methods=['GET', 'POST'])
+def quiz():
+    # Ensure QuizBrain exists in session
+    if 'quiz_brain' not in session:
+        flash("You must complete the trivia setup first!", "danger")
+        return redirect(url_for('trivia'))
+
+    # Deserialize QuizBrain from session ONCE
+    quiz_brain_data = session.get('quiz_brain')
+    quiz_brain = QuizBrain.deserialize(quiz_brain_data)
+
+    feedback = None
+    if request.method == 'POST':
+        # Process user answer
+        user_answer = request.form.get('user_answer')  # Get user's answer
+        feedback = quiz_brain.check_answer(user_answer)  # Check answer
+        flash(f"{feedback} Your score is {quiz_brain.score}/{quiz_brain.question_number}", "success")
+        # Save updated state to session
+        session['quiz_brain'] = quiz_brain.serialize()  # Ensure changes are saved
+
+        # Redirect if quiz is over
+        if not quiz_brain.still_has_questions():
+            flash(f"Your final score was: {quiz_brain.score}/{quiz_brain.question_number}", "success")
             return redirect(url_for('trivia'))
+
+    # Get the next question
+    current_question = quiz_brain.next_question()
+    session['quiz_brain'] = quiz_brain.serialize()  # Save updated state to session
+
+    return render_template(
+        'quiz.html',
+        current_question=current_question,
+        answers=quiz_brain.current_question['answers'],
+        feedback=feedback
+    )
+
 
 # For testing only
 @app.route('/elements', methods=['GET', 'POST'])

@@ -52,6 +52,8 @@
 								<h1>Trivia Game</h1>
 							</header>
 
+							<span class="image main"><img src="static/images/trivia_logo.jpeg" alt="Trivia game logo" /></span>
+
 							{% with messages = get_flashed_messages(with_categories=true) %}
 								{% if messages %}
 									<div class="flash-messages">
@@ -62,27 +64,25 @@
 								{% endif %}
 							{% endwith %}
 
-							<span class="image main"><img src="static/images/trivia_logo.jpeg" alt="Trivia game logo" /></span>
-
 							<!-- Form -->
-							<form method="post" action="/quiz">
+
+							<form method="post" action="{{ url_for('quiz') }}">
 								<section>
 									<div class="inner">
-                                        {% for question in grouped_questions %}
-                                            <h3><strong>Question {{ question.index }}:</strong> {{ question.text }}</h3>
-                                            {% for answer in question.answers %}
-                                            <div class="col-4 col-12-small">
-                                                <input type="radio" id="answer-{{ question.index }}-{{ answer }}" name="question-{{ question.index }}" value="{{ answer }}">
-                                                <label for="answer-{{ question.index }}-{{ answer }}" style="font-size: 1.5rem">{{ answer }}</label>
-                                            </div>
-                                            {% endfor %}
-											<div class="col-12">
-												<ul class="actions">
-													<li><input type="submit" value="Check Answer" class="primary" /></li>
-												</ul>
-											</div>
-                                            <hr>
+										<h3><strong>Question {{ current_question }}:</strong></h3>
+										<hr>
+										{% for answer in answers %}
+										<div class="col-4 col-12-small">
+											<input type="radio" id="answer-{{ loop.index }}" name="user_answer" value="{{ answer }}" required>
+											<label for="answer-{{ loop.index }}" style="font-size: 1.5rem">{{ answer }}</label>
+										</div>
+										<hr>
                                         {% endfor %}
+										<div class="col-12">
+											<ul class="actions">
+												<li><input type="submit" value="Check Answer" class="primary" /></li>
+											</ul>
+										</div>
 									</div>
 								</section>
 							</form>
@@ -133,4 +133,29 @@
 			<script src="static/assets/js/main.js"></script>
 
 	</body>
+
+	<script>
+		// Save scroll position before the page unloads
+		window.addEventListener("beforeunload", function () {
+			localStorage.setItem("scrollPosition", window.scrollY);
+		});
+
+		// Restore scroll position unless it's the first load
+		window.addEventListener("load", function () {
+			const urlParams = new URLSearchParams(window.location.search);
+			const isFirstLoad = urlParams.get("first_load");
+
+			if (!isFirstLoad) {
+				const scrollPosition = localStorage.getItem("scrollPosition");
+				if (scrollPosition) {
+					window.scrollTo(0, parseInt(scrollPosition, 10));
+				}
+			} else {
+				// Clear the first_load query parameter (optional, for cleaner URLs)
+				const newUrl = window.location.href.split("?")[0];
+				history.replaceState({}, document.title, newUrl);
+			}
+		});
+	</script>
+
 </html>
