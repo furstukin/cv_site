@@ -1,36 +1,25 @@
-from data import TRIVIA_TYPE, TRIVIA_CATEGORIES, TRIVIA_DIFFICULTY
-from question_model import Question
+
 from quiz_brain import QuizBrain
-from quiz_ui import QuizInterface
-import requests
-from bs4 import BeautifulSoup
 
-quiz_parameters = {
-    "amount": 10,
-    "type": "boolean"
-}
-
-quiz_data = requests.get(url="https://opentdb.com/api.php", params=quiz_parameters)
-quiz_data.raise_for_status()
-question_data = quiz_data.json()["results"]
-
-question_bank = []
-for question in question_data:
-    question_text = question["question"]
-    question_answer = question["correct_answer"]
-    new_question = Question(question_text, question_answer)
-    question_bank.append(new_question)
+question_bank = [{'index': 1, 'text': 'In the 1992 film "Army of Darkness", what name does Ash give to his double-barreled shotgun?', 'answers': ['Blastbranch', 'Boomstick', 'Bloomstick', '2-Pump Chump'], 'correct': 'Boomstick'},
+                 {'index': 2, 'text': 'In the movie "Spaceballs", what are the Spaceballs attempting to steal from Planet Druidia?', 'answers': ['Meatballs', 'Princess Lonestar', 'Air', 'The Schwartz'], 'correct': 'Air'},
+                 {'index': 3, 'text': 'What is the name of the fictional retro-mod band starring Austin Powers as the lead vocalist?', 'answers': ['Cough Fi', 'Ming Tea', 'Spear Mint', 'Mister E'], 'correct': 'Ming Tea'},
+                 {'index': 4, 'text': 'In the movie Gremlins, after what time of day should you not feed Mogwai?', 'answers': ['Afternoon', 'Morning', 'Midnight', 'Evening'], 'correct': 'Midnight'},
+                 {'index': 5, 'text': 'In the Super Mario Bros. Movie (2023), who plays Toad?', 'answers': ['Keegan-Michael Key', 'Seth Rogan', 'Charlie Day', 'Jack Black'], 'correct': 'Keegan-Michael Key'},
+                 {'index': 6, 'text': "Which actress danced the twist with John Travolta in 'Pulp Fiction'?", 'answers': ['Uma Thurman', 'Pam Grier', 'Kathy Griffin', 'Bridget Fonda'], 'correct': 'Uma Thurman'},
+                 {'index': 7, 'text': 'Who directed the movies "Pulp Fiction", "Reservoir Dogs" and "Django Unchained"?', 'answers': ['James Cameron', 'Quentin Tarantino', 'Martin Scorcese', 'Steven Spielberg'], 'correct': 'Quentin Tarantino'},
+                 {'index': 8, 'text': 'Which animated movie was first to feature a celebrity as a voice actor?', 'answers': ['James and the Giant Peach', 'The Hunchback of Notre Dame', 'Aladdin', 'Toy Story'], 'correct': 'Aladdin'},
+                 {'index': 9, 'text': 'At the end of the 2001 film "Rat Race", whose concert do the contestants crash?', 'answers': ['Bowling for Soup', 'Linkin Park', 'Sum 41', 'Smash Mouth'], 'correct': 'Smash Mouth'},
+                 {'index': 10, 'text': 'In "Jurassic World", what is the name of the dinosaur that is a genetic hybrid?', 'answers': ['Tyrannosaurus Rex ', 'Pteranodon', 'Indominus Rex', 'Mosasaurus'], 'correct': 'Indominus Rex'}]
 
 quiz = QuizBrain(question_bank)
-game_interface = QuizInterface(quiz)
+while quiz.still_has_questions():
+    quiz.get_next_question()
+    answer = input()
+    quiz.check_answer(answer)
+quiz.get_next_question()
 
-# # Call API site and make soup
-# response = requests.get("https://opentdb.com/api_config.php")
-# response.raise_for_status()
-#
-# # Get the html back from the response
-# site_html = response.text
-#
+
 # # Initialize BeautifulSoup on the html
 # soup = BeautifulSoup(site_html, "html.parser")
 #
