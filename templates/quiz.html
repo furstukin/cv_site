@@ -1,0 +1,122 @@
+<!DOCTYPE HTML>
+<!--
+	Reflex by Pixelarity
+	pixelarity.com | hello@pixelarity.com
+	License: pixelarity.com/license
+-->
+<html>
+	<head>
+		<title>Trivia Night!</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="static/assets/css/main.css" />
+		<link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
+	</head>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<header id="header">
+				<nav>
+					<ul>
+						<li><a href="#menu">Menu</a></li>
+					</ul>
+				</nav>
+			</header>
+
+		<!-- Menu -->
+			<nav id="menu">
+				<h2>Menu</h2>
+				<ul class="links">
+					<li><a href="index.html">Home</a></li>
+					<li><a href="generic.html">Ipsum veroeros</a></li>
+					<li><a href="generic.html">Tempus etiam</a></li>
+					<li><a href="generic.html">Consequat dolor</a></li>
+					<li><a href="elements.html">Elements</a></li>
+				</ul>
+				<ul class="actions stacked">
+					<li><a href="#" class="button fit primary">Get Started</a></li>
+					<li><a href="#" class="button fit">Log In</a></li>
+				</ul>
+			</nav>
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<section id="main" class="wrapper style1">
+						<div class="inner">
+							<header class="major">
+								<h1>Trivia Game</h1>
+							</header>
+
+							{% with messages = get_flashed_messages(with_categories=true) %}
+								{% if messages %}
+									<div class="flash-messages">
+										{% for category, message in messages %}
+											<div class="alert alert-{{ category }}">{{ message }}</div>
+										{% endfor %}
+									</div>
+								{% endif %}
+							{% endwith %}
+
+							<span class="image main"><img src="static/images/trivia_logo.jpeg" alt="" /></span>
+							</div>
+							<section>
+								<div class="inner">
+									{% for question in grouped_questions %}
+										<h3><strong>Question {{ question.index }}:</strong> {{ question.text }}</h3>
+										{% for answer in question.answers %}
+										<div class="col-4 col-12-small">
+											<input type="radio" id="answer-{{ question.index }}-{{ answer }}" name="question-{{ question.index }}" value="{{ answer }}">
+											<label for="answer-{{ question.index }}-{{ answer }}" style="font-size: 1.5rem">{{ answer }}</label>
+										</div>
+										{% endfor %}
+										<hr>
+									{% endfor %}
+								</div>
+							</section>
+					</section>
+			</div>
+
+			<!-- Footer -->
+				<section id="footer" class="wrapper split style2">
+					<div class="inner">
+						<section>
+							<header>
+								<h3>Magna lorem ipsum</h3>
+							</header>
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis dapibus rutrum facilisis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos magna fames ac turpis egestas amet non lorem amet.</p>
+							<ul class="icons">
+								<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+								<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
+								<li><a href="#" class="icon brands fa-snapchat-ghost"><span class="label">Snapchat</span></a></li>
+								<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></l
+							</ul>
+						</section>
+						<section>
+							<form method="post" action="#">
+								<div class="fields">
+									<div class="field half"><input type="text" name="name" id="name" placeholder="Name" /></div>
+									<div class="field half"><input type="email" name="email" id="email" placeholder="Email" /></div>
+									<div class="field"><textarea name="message" id="message" placeholder="Message" rows="4"></textarea></div>
+								</div>
+								<ul class="actions">
+									<li><input type="submit" value="Send Message" /></li>
+								</ul>
+							</form>
+						</section>
+					</div>
+					<div class="copyright">
+						<p>&copy; Untitled. All rights reserved. Lorem ipsum dolor sit amet nullam.</p>
+					</div>
+				</section>
+
+		<!-- Scripts -->
+			<script src="static/assets/js/jquery.min.js"></script>
+			<script src="static/assets/js/browser.min.js"></script>
+			<script src="static/assets/js/breakpoints.min.js"></script>
+			<script src="static/assets/js/util.js"></script>
+			<script src="static/assets/js/main.js"></script>
+
+	</body>
+</html>

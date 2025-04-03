@@ -54,7 +54,6 @@
 									the Open Trivia Database API
 								</p>
 							</header>
-							<span class="image main"><img src="static/images/trivia_logo.jpeg" alt="Trivia game logo" /></span>
 
 							{% with messages = get_flashed_messages(with_categories=true) %}
 								{% if messages %}
@@ -66,11 +65,13 @@
 								{% endif %}
 							{% endwith %}
 
+							<span class="image main"><img src="static/images/trivia_logo.jpeg" alt="Trivia game logo" /></span>
+
 							<!-- Form -->
 								<section>
 									<div class="inner">
 										<h2>Trivia Setup</h2>
-										<form method="post" action="/trivia">
+										<form method="post" action="/quiz">
 											<div class="row gtr-uniform">
 												<div class="col-12">
 													<select name="category" id="category">

@@ -1,6 +1,6 @@
 import random
-
-from flask import Flask, render_template, redirect, url_for, request, flash
+import html
+from flask import Flask, render_template, redirect, url_for, request, flash, session
 from flask_bootstrap import Bootstrap4
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
@@ -52,57 +52,75 @@ def morse():
 
 @app.route('/trivia', methods=['GET', 'POST'])
 def trivia():
+    return render_template('trivia.html', categories=TRIVIA_CATEGORIES, difficulties=TRIVIA_DIFFICULTY, type=TRIVIA_TYPE, q_count=TRIVIA_QUESTION_COUNT)
+
+
+@app.route('/quiz', methods=['GET', 'POST'])
+def quiz():
     if request.method == 'POST':
+        # Get parameters for API call
         category = TRIVIA_CATEGORIES[request.form['category']]
         question_count = request.form['question-count']
         difficulty = TRIVIA_DIFFICULTY[request.form['difficulty']]
         question_style = TRIVIA_TYPE[request.form['question-style']]
+
+        # API request for trivia questions
         quiz_parameters = {
             'amount': question_count,
             'category': category,
             'difficulty': difficulty,
             'type': question_style
         }
-
         quiz_data = requests.get(url="https://opentdb.com/api.php", params=quiz_parameters)
         quiz_data.raise_for_status()
         question_data = quiz_data.json()["results"]
-        response = quiz_data.json()["response_code"]
+        response_code = quiz_data.json()["response_code"]
 
-        print(response)
-        print(question_data)
-
-        if response == 1:
-            # Handle error
+        # Check API response and handle errors
+        if response_code == 1:
             flash("Error: The API couldn't provide enough questions for your query.", "danger")
             flash("Tip: Try reducing the number of questions or selecting a different category.", "danger")
-        else:
-        # Proceed with processing on success
-            question_bank = []
-            question_dict = {}
-            index = 0
-            for question in question_data:
-                index += 1
-                question_text = question["question"]
-                correct_answer = question["correct_answer"]
-                answers = question["incorrect_answers"] + [question["correct_answer"]]
+            return redirect(url_for('trivia'))
 
-                if question["type"] == 'multiple':
-                    random.shuffle(answers)
+        # Dynamically create question_dict
+        grouped_questions = []  # Create a list to store grouped question dictionaries
+        index = 0
 
-                question_dict[f"Question {index} Text"] = question_text
-                question_dict[f"Question {index} Answers"] = answers
-                question_dict[f"Question {index} Correct"] = correct_answer
-                new_question = Question(question_text, correct_answer)
-                question_bank.append(new_question)
-            flash("Your trivia game has been generated.")
+        for question in question_data:
+            index += 1
+            question_text = html.unescape(question["question"])
+            correct_answer = html.unescape(question["correct_answer"])
+            answers = [html.unescape(answer) for answer in question["incorrect_answers"] + [question["correct_answer"]]]
 
-            print(question_dict)
+            # Shuffle answers for multiple-choice questions, sort for Boolean questions
+            if question["type"] == 'multiple':
+                random.shuffle(answers)
+            else:
+                answers = sorted(answers, reverse=True)
 
-            # quiz = QuizBrain(question_bank)
-            # game_interface = QuizInterface(quiz)
-    return render_template('trivia.html', categories=TRIVIA_CATEGORIES, difficulties=TRIVIA_DIFFICULTY, type=TRIVIA_TYPE, q_count=TRIVIA_QUESTION_COUNT)
+            # Create a dictionary for the current question and add it to the list
+            grouped_questions.append({
+                "index": index,  # Question number
+                "text": question_text,
+                "answers": answers,
+                "correct": correct_answer
+            })
 
+        # Store the question dictionary in the session
+        session['grouped_questions'] = grouped_questions
+        session['trivia_form_submitted'] = True  # Set the flag
+        flash("Your trivia quiz has been generated. Good luck!", "info")
+
+        # Pass question_dict to the template
+        return render_template('quiz.html', grouped_questions=grouped_questions)
+
+    elif request.method == 'GET':
+        # Check if the form has been submitted, otherwise redirect
+        if not session.get('trivia_form_submitted'):
+            flash("You must complete the trivia setup first!", "danger")
+            return redirect(url_for('trivia'))
+
+# For testing only
 @app.route('/elements', methods=['GET', 'POST'])
 def elements():
     return render_template('elements.html')
