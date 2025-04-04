@@ -15,32 +15,8 @@
 		<link rel="stylesheet" href="static/assets/css/main.css" />
     	<link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" rel="stylesheet">
 	</head>
-	<body class="is-preload">
 
-		<!-- Header -->
-			<header id="header">
-				<nav>
-					<ul>
-						<li><a href="#menu">Menu</a></li>
-					</ul>
-				</nav>
-			</header>
-
-		<!-- Menu -->
-			<nav id="menu">
-				<h2>Menu</h2>
-				<ul class="links">
-					<li><a href="index.html">Home</a></li>
-					<li><a href="generic.html">Ipsum veroeros</a></li>
-					<li><a href="generic.html">Tempus etiam</a></li>
-					<li><a href="generic.html">Consequat dolor</a></li>
-					<li><a href="elements.html">Elements</a></li>
-				</ul>
-				<ul class="actions stacked">
-					<li><a href="#" class="button fit primary">Get Started</a></li>
-					<li><a href="#" class="button fit">Log In</a></li>
-				</ul>
-			</nav>
+	{% include "header.html" %}
 
 		<!-- Wrapper -->
 			<div id="wrapper">
@@ -90,40 +66,7 @@
 					</section>
 			</div>
 
-				<!-- Footer -->
-					<section id="footer" class="wrapper split style2">
-						<div class="inner">
-							<section>
-								<header>
-									<h3>Magna lorem ipsum</h3>
-								</header>
-								<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis dapibus rutrum facilisis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos magna fames ac turpis egestas amet non lorem amet.</p>
-								<ul class="icons">
-									<li><a href="#" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-									<li><a href="#" class="icon brands fa-instagram"><span class="label">Instagram</span></a></li>
-									<li><a href="#" class="icon brands fa-snapchat-ghost"><span class="label">Snapchat</span></a></li>
-									<li><a href="#" class="icon brands fa-github"><span class="label">GitHub</span></a></l
-								</ul>
-							</section>
-							<section>
-								<form method="post" action="#">
-									<div class="fields">
-										<div class="field half"><input type="text" name="name" id="name" placeholder="Name" /></div>
-										<div class="field half"><input type="email" name="email" id="email" placeholder="Email" /></div>
-										<div class="field"><textarea name="message" id="message" placeholder="Message" rows="4"></textarea></div>
-									</div>
-									<ul class="actions">
-										<li><input type="submit" value="Send Message" /></li>
-									</ul>
-								</form>
-							</section>
-						</div>
-						<div class="copyright">
-							<p>&copy; Untitled. All rights reserved. Lorem ipsum dolor sit amet nullam.</p>
-						</div>
-					</section>
-
-			</div>
+{% include "footer.html" %}
 
 		<!-- Scripts -->
 			<script src="static/assets/js/jquery.min.js"></script>
@@ -131,31 +74,28 @@
 			<script src="static/assets/js/breakpoints.min.js"></script>
 			<script src="static/assets/js/util.js"></script>
 			<script src="static/assets/js/main.js"></script>
+			<script>
+				// Save scroll position before the page unloads
+				window.addEventListener("beforeunload", function () {
+					localStorage.setItem("scrollPosition", window.scrollY);
+				});
 
-	</body>
+				// Restore scroll position unless it's the first load
+				window.addEventListener("load", function () {
+					const urlParams = new URLSearchParams(window.location.search);
+					const isFirstLoad = urlParams.get("first_load");
 
-	<script>
-		// Save scroll position before the page unloads
-		window.addEventListener("beforeunload", function () {
-			localStorage.setItem("scrollPosition", window.scrollY);
-		});
-
-		// Restore scroll position unless it's the first load
-		window.addEventListener("load", function () {
-			const urlParams = new URLSearchParams(window.location.search);
-			const isFirstLoad = urlParams.get("first_load");
-
-			if (!isFirstLoad) {
-				const scrollPosition = localStorage.getItem("scrollPosition");
-				if (scrollPosition) {
-					window.scrollTo(0, parseInt(scrollPosition, 10));
-				}
-			} else {
-				// Clear the first_load query parameter (optional, for cleaner URLs)
-				const newUrl = window.location.href.split("?")[0];
-				history.replaceState({}, document.title, newUrl);
-			}
-		});
-	</script>
+					if (!isFirstLoad) {
+						const scrollPosition = localStorage.getItem("scrollPosition");
+						if (scrollPosition) {
+							window.scrollTo(0, parseInt(scrollPosition, 10));
+						}
+					} else {
+						// Clear the first_load query parameter (optional, for cleaner URLs)
+						const newUrl = window.location.href.split("?")[0];
+						history.replaceState({}, document.title, newUrl);
+					}
+				});
+			</script>
 
 </html>

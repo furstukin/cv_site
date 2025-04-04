@@ -1,6 +1,6 @@
 import random
 import html
-from flask import Flask, render_template, redirect, url_for, request, flash, session
+from flask import Flask, render_template, redirect, url_for, request, flash, session, get_flashed_messages
 from flask_bootstrap import Bootstrap4
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
@@ -10,21 +10,28 @@ from wtforms import StringField, SubmitField
 from wtforms.fields.numeric import FloatField, IntegerField
 from wtforms.validators import DataRequired, NumberRange
 import requests
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 from crossmorsepy import MorseAudio
 from data import NATO_CODE, MORSE_CODE, BRAILLE, TRIVIA_CATEGORIES, TRIVIA_TYPE, TRIVIA_DIFFICULTY, TRIVIA_QUESTION_COUNT
 from quiz_brain import QuizBrain
 from dotenv import load_dotenv
 import os
 from quiz_call import QuizCall
+from contact_manager import ContactManager
 
 load_dotenv()
+
+MY_EMAIL = os.getenv('MY_EMAIL')
+MY_EMAIL2 = os.getenv('MY_EMAIL2')
+contact_manager = ContactManager()
 morse_audio = MorseAudio()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('CSRF_TOKEN')
 Bootstrap4(app)
 
-@app.route("/")
+@app.route("/", methods=['GET', 'POST'])
 def home():
     return render_template("index.html")
 
@@ -125,15 +132,42 @@ def quiz():
         feedback=feedback
     )
 
+@app.route('/resume', methods=['GET', 'POST'])
+def resume():
+    return render_template('resume.html')
+
+@app.route('/contact', methods=["GET", "POST"])
+def contact():
+    if request.method == 'POST':
+        name = request.form.get('name')
+        from_email = request.form.get('email')
+        body = request.form.get('message')
+
+        # Create message container
+        msg = MIMEMultipart("alternative")
+        msg['From'] = MY_EMAIL
+        msg['To'] = from_email
+        msg['Subject'] = f"You have a new contact message on your CV Site from {name}"
+
+        # Initialize the email body
+        email_body = []
+
+        full_email_body = ("<html><body><p>" + f"Hello Dustin, <br><br>Here is the contact message from:<br><br>"
+                                               f"{name}<br>"
+                                               f"{from_email}<br>"
+                           + "".join(email_body)
+                           + f"{body}</p></body></html>")
+        msg.attach(MIMEText(full_email_body, "html"))
+        message = msg.as_string()
+        contact_manager.send_email(from_email=MY_EMAIL, user_email=MY_EMAIL2, message=message)
+        flash('Your message was sent.', 'success')  # Make sure this is called
+        return redirect(url_for('home'))  # Ensure the redirect aligns with the `home` route
+
 
 # For testing only
 @app.route('/elements', methods=['GET', 'POST'])
 def elements():
     return render_template('elements.html')
-
-@app.route('/resume')
-def resume():
-    return render_template('resume.html')
 
 if __name__ == "__main__":
     app.run(debug=False, port=5002)
