@@ -11,4 +11,3 @@ class ContactManager:
             server.starttls()
             server.login(from_email, self.GMAIL_APP_PW)
             server.sendmail(from_email, user_email, message)
-        print("Email Sent")
