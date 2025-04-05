@@ -1,5 +1,9 @@
 @import url(fontawesome-all.min.css);
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap");
+/*
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wght@8..144,100..1000&display=swap");
 @import url("https://fonts.googleapis.com/css?family=Raleway:300,300italic,500,500italic");
+*/
 
 /*
 	Reflex by Pixelarity
@@ -2090,6 +2094,7 @@ input, select, textarea {
 	input[type="text"],
 	input[type="password"],
 	input[type="email"],
+	input[type="number"],
 	select,
 	textarea {
 		-moz-appearance: none;
@@ -2110,6 +2115,7 @@ input, select, textarea {
 		input[type="text"]:invalid,
 		input[type="password"]:invalid,
 		input[type="email"]:invalid,
+		input[type="number"]:invalid,
 		select:invalid,
 		textarea:invalid {
 			box-shadow: none;
@@ -2135,6 +2141,7 @@ input, select, textarea {
 	input[type="text"],
 	input[type="password"],
 	input[type="email"],
+	input[type="number"],
 	select {
 		height: 3em;
 	}
@@ -2244,6 +2251,7 @@ input, select, textarea {
 	input[type="text"],
 	input[type="password"],
 	input[type="email"],
+	input[type="number"],
 	select,
 	textarea {
 		background-color: #ffffff;
@@ -2253,6 +2261,7 @@ input, select, textarea {
 		input[type="text"]:focus,
 		input[type="password"]:focus,
 		input[type="email"]:focus,
+		input[type="number"]:focus,
 		select:focus,
 		textarea:focus {
 			border-color: #565656;
@@ -3047,6 +3056,7 @@ input, select, textarea {
 			.wrapper.style3 input[type="text"],
 			.wrapper.style3 input[type="password"],
 			.wrapper.style3 input[type="email"],
+			.wrapper.style3 input[type="number"],
 			.wrapper.style3 select,
 			.wrapper.style3 textarea {
 				background-color: rgba(255, 255, 255, 0.075);
@@ -3056,6 +3066,7 @@ input, select, textarea {
 				.wrapper.style3 input[type="text"]:focus,
 				.wrapper.style3 input[type="password"]:focus,
 				.wrapper.style3 input[type="email"]:focus,
+				.wrapper.style3 input[type="number"]:focus,
 				.wrapper.style3 select:focus,
 				.wrapper.style3 textarea:focus {
 					background: rgba(255, 255, 255, 0.25);
@@ -3561,6 +3572,7 @@ input, select, textarea {
 		#menu input[type="text"],
 		#menu input[type="password"],
 		#menu input[type="email"],
+		#menu input[type="number"],
 		#menu select,
 		#menu textarea {
 			background-color: rgba(255, 255, 255, 0.075);
@@ -3570,6 +3582,7 @@ input, select, textarea {
 			#menu input[type="text"]:focus,
 			#menu input[type="password"]:focus,
 			#menu input[type="email"]:focus,
+			#menu input[type="number"]:focus,
 			#menu select:focus,
 			#menu textarea:focus {
 				background: rgba(255, 255, 255, 0.25);
@@ -3894,3 +3907,17 @@ input, select, textarea {
 			}
 
 		}
+
+        .col-num {
+            width: 50%; /* Ensures the container spans the full section */
+            display: block; /* Ensures each input is treated as a block */
+            margin-bottom: 10px; /* Adds spacing between rows */
+        }
+
+        .col-num input {
+            width: 80%; /* Makes inputs span the full width of the container */
+            box-sizing: border-box; /* Includes padding and border in width calculations */
+            padding: 10px; /* Adds comfortable padding inside the input */
+        }
+
+

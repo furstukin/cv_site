@@ -26,3 +26,5 @@ python-dotenv~=1.1.0
 numpy~=2.2.4
 playsound~=1.2.2
 pygame~=2.6.1
+joblib~=1.4.2
+scikit-learn~=1.6.1
