@@ -21,10 +21,10 @@ gunicorn==23.0.0
 psycopg2-binary
 bleach==6.2.0
 requests~=2.32.3
-Flask-Bootstrap~=3.3.7.1
 python-dotenv~=1.1.0
-numpy~=2.2.4
+numpy~=2.1.0
 playsound~=1.2.2
 pygame~=2.6.1
 joblib~=1.4.2
 scikit-learn~=1.6.1
+tensorflow~=2.19.0

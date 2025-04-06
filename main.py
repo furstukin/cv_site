@@ -1,7 +1,7 @@
 import random
 import html
 from flask import Flask, render_template, redirect, url_for, request, flash, session, get_flashed_messages
-from flask_bootstrap import Bootstrap4
+from flask_bootstrap import Bootstrap5
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy import Integer, String, Float
@@ -31,7 +31,7 @@ eeg_eye_model = EegEyeModel()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('CSRF_TOKEN')
-Bootstrap4(app)
+Bootstrap5(app)
 
 @app.route("/", methods=['GET', 'POST'])
 def home():
