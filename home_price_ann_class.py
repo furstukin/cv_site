@@ -13,7 +13,7 @@ class HousePriceModel:
 
 # model = HousePriceModel()
 #
-# home = [4272, 3, 3, 2016, 4.7530138494020395, 1, 6]
+# home = [1500, 4, 2, 1, 2015, 0.25, 2, 4]
 #
 # response = model.predict([home])
 # print(response)

@@ -28,7 +28,6 @@ class QuizCall:
                 'type': self.q_style
             }
 
-        print(quiz_parameters)
         quiz_data = requests.get(url="https://opentdb.com/api.php", params=quiz_parameters)
         quiz_data.raise_for_status()
         question_data = quiz_data.json()["results"]
@@ -42,7 +41,6 @@ class QuizCall:
         grouped_questions = []  # Create a list to store grouped question dictionaries
         index = 0
 
-        print(question_data)
         for question in question_data:
             index += 1
             question_text = html.unescape(question["question"])
@@ -62,5 +60,5 @@ class QuizCall:
                 "answers": answers,
                 "correct": correct_answer
             })
-        print(grouped_questions)
+
         return grouped_questions

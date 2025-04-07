@@ -44,7 +44,7 @@
 								}
 							</style>
 
-							<div class="flash-messages">
+							<div class="flash-messages" id="question">
 								{% with messages = get_flashed_messages(with_categories=true) %}
 									{% if messages %}
 										<div class="flash-wrapper">
@@ -93,27 +93,30 @@
 			<script src="static/assets/js/util.js"></script>
 			<script src="static/assets/js/main.js"></script>
 			<script>
-				// Save scroll position before the page unloads
-				window.addEventListener("beforeunload", function () {
-					localStorage.setItem("scrollPosition", window.scrollY);
+				// Save scroll position before unloading
+				window.addEventListener('beforeunload', () => {
+					localStorage.setItem('scrollPosition', window.scrollY);
 				});
 
-				// Restore scroll position unless it's the first load
-				window.addEventListener("load", function () {
-					const urlParams = new URLSearchParams(window.location.search);
-					const isFirstLoad = urlParams.get("first_load");
-
-					if (!isFirstLoad) {
-						const scrollPosition = localStorage.getItem("scrollPosition");
-						if (scrollPosition) {
-							window.scrollTo(0, parseInt(scrollPosition, 10));
-						}
-					} else {
-						// Clear the first_load query parameter (optional, for cleaner URLs)
-						const newUrl = window.location.href.split("?")[0];
-						history.replaceState({}, document.title, newUrl);
+				// Restore scroll position on page load
+				window.addEventListener('load', () => {
+					const scrollPosition = localStorage.getItem('scrollPosition');
+					if (scrollPosition) {
+						window.scrollTo(0, parseInt(scrollPosition));
+						localStorage.removeItem('scrollPosition'); // Clean up
 					}
 				});
 			</script>
+			<script>
+				window.onload = function() {
+					// Explicitly reference the 'question' id anchor
+					const element = document.getElementById('question');
+					if (element) {
+						// Scroll smoothly to the 'question' anchor
+						element.scrollIntoView({ behavior: 'smooth' });
+					}
+				};
+			</script>
+
 
 </html>

@@ -1,0 +1,258 @@
+<!DOCTYPE HTML>
+<!--
+	Reflex by Pixelarity
+	pixelarity.com | hello@pixelarity.com
+	License: pixelarity.com/license
+-->
+<html>
+	<head>
+		<title>Home Price Estimator</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="static/assets/css/main.css" />
+	</head>
+
+		{% include "header.html" %}
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<section id="main" class="wrapper style1">
+						<div class="inner">
+							<header class="major">
+								<h1>Home Price Estimator</h1>
+								<p>Use an artificial neural network to estimate the value of a home.</p>
+								{% if home_val != "" %}
+								<p>Estimated home value is {{ home_val }}</p>
+								{% endif %}
+							</header>
+							<span class="image main"><img src="static/images/home_prices.jpeg" alt="picture of calculations for home prices" /></span>
+							<p>Enter values in the form below for the different home attributes to get an estimated value. You can also click any row in the table to auto-populate the form and make changes to see how it would change the value of the home.</p>
+
+							<!-- Table -->
+								<section>
+									<h3>Sample Home Data</h3>
+									<div class="table-wrapper">
+										<table>
+											<thead>
+												<tr>
+													<th>Home Value</th>
+													<th>Square Footage</th>
+													<th>Number of Bedrooms</th>
+													<th>Number of Bathrooms</th>
+													<th>Basement (1=Yes, 0=No)</th>
+													<th>Year Built</th>
+													<th>Lot Size (Acres)</th>
+													<th>Garage Size</th>
+													<th>Neighborhood Quality (1=Worst, 10=Best)</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr onclick="populateForm(this)">
+													<td >$72,105</td>
+													<td>876</td>
+													<td>2</td>
+													<td>1</td>
+													<td>0</td>
+													<td>1956</td>
+													<td>0.25</td>
+													<td>1</td>
+													<td>3</td>
+												</tr>
+												<tr onclick="populateForm(this)">
+													<td>$178,565</td>
+													<td>1053</td>
+													<td>3</td>
+													<td>2</td>
+													<td>0</td>
+													<td>2022</td>
+													<td>0.25</td>
+													<td>2</td>
+													<td>6</td>
+												</tr>
+												<tr onclick="populateForm(this)">
+													<td>$273,261</td>
+													<td>1707</td>
+													<td>3</td>
+													<td>2</td>
+													<td>1</td>
+													<td>2002</td>
+													<td>0.75</td>
+													<td>2</td>
+													<td>6</td>
+												</tr>
+												<tr onclick="populateForm(this)">
+													<td>$354,642</td>
+													<td>1684</td>
+													<td>4</td>
+													<td>2.5</td>
+													<td>1</td>
+													<td>2023</td>
+													<td>0.25</td>
+													<td>1</td>
+													<td>7</td>
+												</tr>
+												<tr onclick="populateForm(this)">
+													<td>$461,722</td>
+													<td>2128</td>
+													<td>4</td>
+													<td>3</td>
+													<td>1</td>
+													<td>2009</td>
+													<td>0.33</td>
+													<td>2</td>
+													<td>5</td>
+												</tr>
+												<tr onclick="populateForm(this)">
+													<td>$504,076</td>
+													<td>2340</td>
+													<td>4</td>
+													<td>3</td>
+													<td>0</td>
+													<td>2022</td>
+													<td>0.5</td>
+													<td>2</td>
+													<td>5</td>
+												</tr>
+												<tr onclick="populateForm(this)">
+													<td>$638,418</td>
+													<td>2250</td>
+													<td>5</td>
+													<td>3</td>
+													<td>0</td>
+													<td>2022</td>
+													<td>0.33</td>
+													<td>3</td>
+													<td>9</td>
+												</tr>
+												<tr onclick="populateForm(this)">
+													<td>$749,749</td>
+													<td>2230</td>
+													<td>5</td>
+													<td>4</td>
+													<td>0</td>
+													<td>2016</td>
+													<td>0.5</td>
+													<td>3</td>
+													<td>5</td>
+												</tr>
+												<tr onclick="populateForm(this)">
+													<td>$1,492,880</td>
+													<td>3612</td>
+													<td>7</td>
+													<td>4</td>
+													<td>0</td>
+													<td>2015</td>
+													<td>1</td>
+													<td>2</td>
+													<td>1</td>
+												</tr>
+												<tr onclick="populateForm(this)">
+													<td>$3,148,764</td>
+													<td>4270</td>
+													<td>7</td>
+													<td>7</td>
+													<td>1</td>
+													<td>2009</td>
+													<td>1</td>
+													<td>2</td>
+													<td>5</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+
+							<!-- Form -->
+							<section>
+								<h2>Home Attributes</h2>
+								<form method="post" action="{{ url_for('home_prices') }}">
+									<div class="row gtr-uniform">
+										<div class="col-num">
+											<label for="sqft" style="font-size: 1.5rem">
+												Square Footage
+											</label>
+											<input type="number" name="sqft" id="sqft" value="" placeholder="Enter value between 800 and 5500" min="800" max="5500" step="1" required />
+										</div>
+										<div class="col-num">
+											<label for="n-bed" style="font-size: 1.5rem">
+												Number of Bedrooms
+											</label>
+											<input type="number" name="n-bed" id="n-bed" value="" placeholder="Enter value between 2 and 8" min=2 max=8 step="1" required />
+										</div>
+										<div class="col-num">
+											<label for="n-bath" style="font-size: 1.5rem">
+												Number of Bathrooms
+											</label>
+											<input type="number" name="n-bath" id="n-bath" value="" placeholder="Enter value between 1 and 8" min="1" max="8" step="0.5" required />
+										</div>
+										<div class="col-num">
+											<label for="low-fl" style="font-size: 1.5rem">
+												Has Basement
+											</label>
+											<input type="number" name="low-fl" id="low-fl" value="" placeholder="Enter value between 0 and 1" min="0" max="1" step="1" required />
+										</div>
+										<div class="col-num">
+											<label for="y-blt" style="font-size: 1.5rem">
+												Year Built
+											</label>
+											<input type="number" name="y-blt" id="y-blt" value="" placeholder="Enter value between 1950 and 2024" min="1950" max="2024" step="1" required />
+										</div>
+										<div class="col-num">
+											<label for="lot-sz" style="font-size: 1.5rem">
+												Lot Size (Acres)
+											</label>
+											<input type="number" name="lot-sz" id="lot-sz" value="" placeholder="Enter value between 0.25 and 4.00" min="0.25" max="4.00" step="0.01" required />
+										</div>
+										<div class="col-num">
+											<label for="gr-sz" style="font-size: 1.5rem">
+												Garage Size
+											</label>
+											<input type="number" name="gr-sz" id="gr-sz" value="" placeholder="Enter value between 0 and 7" min="0" max="7" step="1" required />
+										</div>
+										<div class="col-num">
+											<label for="nb-ql" style="font-size: 1.5rem">
+												Neighborhood Quality
+											</label>
+											<input type="number" name="nb-ql" id="nb-ql" value="" placeholder="Enter value between 1 and 10" min="1" max="10" step="1" required />
+										</div>
+										<div class="col-12">
+											<ul class="actions">
+												<li><input type="submit" value="Estimate Value" class="primary" /></li>
+											</ul>
+										</div>
+									</div>
+								</form>
+							</section>
+						</div>
+					</section>
+
+
+
+{% include "footer.html" %}
+
+		<!-- Scripts -->
+			<script src="static/assets/js/jquery.min.js"></script>
+			<script src="static/assets/js/browser.min.js"></script>
+			<script src="static/assets/js/breakpoints.min.js"></script>
+			<script src="static/assets/js/util.js"></script>
+			<script src="static/assets/js/main.js"></script>
+			<script>
+				function populateForm(row) {
+					const cells = row.getElementsByTagName('td'); // Get all cells in the row
+
+					// Populate form fields based on the cell values
+					document.getElementById('sqft').value = cells[1].innerText;
+					document.getElementById('n-bed').value = cells[2].innerText;
+					document.getElementById('n-bath').value = cells[3].innerText;
+					document.getElementById('low-fl').value = cells[4].innerText;
+					document.getElementById('y-blt').value = cells[5].innerText;
+					document.getElementById('lot-sz').value = cells[6].innerText;
+					document.getElementById('gr-sz').value = cells[7].innerText;
+					document.getElementById('nb-ql').value = cells[8].innerText;
+				}
+			</script>
+
+
+	</body>
+</html>

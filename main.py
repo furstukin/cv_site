@@ -20,6 +20,7 @@ import os
 from quiz_call import QuizCall
 from contact_manager import ContactManager
 from eeg_rfc_class import EegEyeModel
+from home_price_ann_class import HousePriceModel
 
 load_dotenv()
 
@@ -28,6 +29,7 @@ MY_EMAIL2 = os.getenv('MY_EMAIL2')
 contact_manager = ContactManager()
 morse_audio = MorseAudio()
 eeg_eye_model = EegEyeModel()
+hpm = HousePriceModel()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('CSRF_TOKEN')
@@ -109,8 +111,11 @@ def quiz():
     quiz_brain_data = session.get('quiz_brain')
     quiz_brain = QuizBrain.deserialize(quiz_brain_data)
 
+    anchor = ""
     feedback = None
+    is_post = False
     if request.method == 'POST':
+        anchor = 'question'
         # Process user answer
         user_answer = request.form.get('user_answer')  # Get user's answer
         feedback = quiz_brain.check_answer(user_answer)  # Check answer
@@ -123,6 +128,7 @@ def quiz():
             flash(f"Your final score was: {quiz_brain.score}/{quiz_brain.question_number}", "success")
             return redirect(url_for('trivia'))
 
+
     # Get the next question
     current_question = quiz_brain.next_question()
     session['quiz_brain'] = quiz_brain.serialize()  # Save updated state to session
@@ -131,7 +137,9 @@ def quiz():
         'quiz.html',
         current_question=current_question,
         answers=quiz_brain.current_question['answers'],
-        feedback=feedback
+        feedback=feedback,
+        anchor=anchor,
+        is_post=is_post
     )
 
 @app.route('/resume', methods=['GET', 'POST'])
@@ -159,15 +167,31 @@ def mind_reader():
 
         brain_wave = [[af3*1000, f7*1000, f3*1000, fc5*1000, t7*1000, p*1000, o1*1000, o2*1000, p8*1000, t8*1000, fc6*1000, f4*1000, f8*1000, af4*1000]]
         prediction = eeg_eye_model.predict(brain_wave)
-        print(prediction)
         if prediction[0] == 1:
             eye_state = 'open'
         else:
             eye_state = 'closed'
 
-        print(eye_state)
-
     return render_template('mindreader.html', eye_state=eye_state)
+
+@app.route('/homeprices', methods=['GET', 'POST'])
+def home_prices():
+    home_val = ""
+    if request.method == 'POST':
+        sqft = float(request.form.get('sqft'))
+        n_bed = float(request.form.get('n-bed'))
+        n_bath = float(request.form.get('n-bath'))
+        low_fl = float(request.form.get('low-fl'))
+        y_blt = float(request.form.get('y-blt'))
+        lot_sz = float(request.form.get('lot-sz'))
+        gr_sz = float(request.form.get('gr-sz'))
+        nb_ql = float(request.form.get('nb-ql'))
+
+        home_attr = [[sqft, n_bed, n_bath, low_fl, y_blt, lot_sz, gr_sz, nb_ql]]
+        prediction = hpm.predict(home_attr)
+        home_val = f"${prediction[0][0]:,.2f}"
+
+    return render_template('homeprices.html', home_val=home_val)
 
 @app.route('/contact', methods=["GET", "POST"])
 def contact():

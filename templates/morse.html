@@ -52,22 +52,6 @@
 								</form>
 							</section>
 
-							<script>
-								// Save scroll position before unloading
-								window.addEventListener('beforeunload', () => {
-									localStorage.setItem('scrollPosition', window.scrollY);
-								});
-
-								// Restore scroll position on page load
-								window.addEventListener('load', () => {
-									const scrollPosition = localStorage.getItem('scrollPosition');
-									if (scrollPosition) {
-										window.scrollTo(0, parseInt(scrollPosition));
-										localStorage.removeItem('scrollPosition'); // Clean up
-									}
-								});
-							</script>
-
 							<p>Morse code was developed by Samuel Morse and Alfred Vail, not just Samuel Morse
 								as is commonly thought, in the 1840's. On May 24, 1844, they sent the first message
 								"What hath God wrought," which is a quote from the Bible. Morse code
@@ -101,6 +85,21 @@
 			<script src="static/assets/js/breakpoints.min.js"></script>
 			<script src="static/assets/js/util.js"></script>
 			<script src="static/assets/js/main.js"></script>
+			<script>
+				// Save scroll position before unloading
+				window.addEventListener('beforeunload', () => {
+					localStorage.setItem('scrollPosition', window.scrollY);
+				});
+
+				// Restore scroll position on page load
+				window.addEventListener('load', () => {
+					const scrollPosition = localStorage.getItem('scrollPosition');
+					if (scrollPosition) {
+						window.scrollTo(0, parseInt(scrollPosition));
+						localStorage.removeItem('scrollPosition'); // Clean up
+					}
+				});
+			</script>
 
 	</body>
 </html>
