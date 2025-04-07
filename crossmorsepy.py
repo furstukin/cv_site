@@ -19,3 +19,13 @@ class MorseAudio:
                 print(result.stderr, flush=True)
                 time.sleep(0.05)  # Short delay after playback
             time.sleep(0.1)  # Delay between characters
+
+    @classmethod
+    def generate_audio_urls(cls, text_to_encode: str):
+        audio_urls = []
+        for char in text_to_encode.lower():
+            if char in MORSE_AUDIO_DICT:
+                m_char = MORSE_AUDIO_DICT[char]
+                audio_file = f'/static/audio/morse_code/32-bit/{m_char}.mp3'
+                audio_urls.append(audio_file)
+        return audio_urls

@@ -100,6 +100,29 @@
 					}
 				});
 			</script>
+			<script>
+				// Function to play audio files sequentially
+				async function playMorseAudio(audioUrls) {
+					console.log('Audio URLs:', audioUrls); // For debugging
+					for (const url of audioUrls) {
+						console.log(`Playing: ${url}`); // Log each URL being played
+						const audio = new Audio(url);
+						await new Promise((resolve) => {
+							audio.onended = resolve; // Wait for the audio to finish
+							audio.play();
+						});
+					}
+				}
 
+				// Automatically trigger playback if audio_urls is not empty
+				document.addEventListener('DOMContentLoaded', () => {
+					const audioUrls = {{ audio_urls|tojson }}; // Load audio URLs from Flask
+					if (audioUrls.length > 0) {
+						playMorseAudio(audioUrls);
+					} else {
+						console.log('No audio files to play.');
+					}
+				});
+			</script>
 	</body>
 </html>

@@ -39,25 +39,34 @@ Bootstrap5(app)
 def home():
     return render_template("index.html")
 
+
 @app.route('/morse', methods=['POST', 'GET'])
 def morse():
     nato_sentence = ''
     morse_sentence = ''
     braille_sentence = ''
+    audio_urls = []  # List to hold audio URLs
+
     if request.method == 'POST':
         text_to_convert = request.form.get('text-to-convert')
-        morse_audio.play_audio(text_to_convert)
+        # Generate audio URLs for the browser to play
+        audio_urls = MorseAudio.generate_audio_urls(text_to_convert)
+        print(audio_urls)
+
+        # Generate other conversions
         nato_text = [NATO_CODE[letter] if letter.isalpha() else letter for letter in text_to_convert.upper()]
         morse_text = [MORSE_CODE[letter] for letter in text_to_convert.upper()]
         braille_text = [BRAILLE[letter] for letter in text_to_convert.lower()]
         nato_sentence = "NATO Phonetic: " + ' '.join(nato_text).strip()
         morse_sentence = "Morse Code: " + ''.join(morse_text).strip()
         braille_sentence = "Braille: " + ''.join(braille_text).strip()
+
     return render_template(
         'morse.html',
         nato_sentence=nato_sentence,
         morse_sentence=morse_sentence,
-        braille_sentence=braille_sentence
+        braille_sentence=braille_sentence,
+        audio_urls=audio_urls  # Pass audio URLs to the template
     )
 
 @app.route('/trivia', methods=['GET', 'POST'])
