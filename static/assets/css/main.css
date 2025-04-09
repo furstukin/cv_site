@@ -2693,15 +2693,6 @@ input, select, textarea {
 
 /* Section/Article */
 
-	section header h1:before, section header h2:before, section header h3:before, section header h4:before, section header h5:before, section header h6:before, article header h1:before, article header h2:before, article header h3:before, article header h4:before, article header h5:before, article header h6:before {
-		content: '';
-		display: block;
-		width: 2em;
-		height: 1px;
-		border-top: solid 1px;
-		margin: 0 0 1em 0;
-	}
-
 	section header p, article header p {
 		font-size: 1.25em;
 	}
