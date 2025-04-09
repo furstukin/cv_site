@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<!--
+	Reflex by Pixelarity
+	pixelarity.com | hello@pixelarity.com
+	License: pixelarity.com/license
+-->
+<html>
+	<head>
+		<title>Data Visualizations</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="static/assets/css/main.css" />
+		<style>
+			/* CSS to style the chart container with a border */
+			.chart-container {
+				width: 100%;
+				margin: 0 auto; /* Center the container on the page */
+				padding: 20px; /* Add some inner spacing */
+				border: 5px solid lightgray; /* Create a frame-like border */
+				border-radius: 10px; /* Optional: rounded corners */
+				background-color: black; /* Match the chart's background */
+				box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.4); /* Optional: add a shadow effect */
+			}
+		</style>
+
+	</head>
+
+		{% include "header.html" %}
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Main -->
+					<section id="main" class="wrapper style1">
+						<div class="inner">
+							<header class="major">
+								<h1>StackOverflow Usage Over Time</h1>
+								<p>Have programmer's relegated StackOverflow to the trash heap?</p>
+							</header>
+							<span class="image main"><img src="static/images/data_viz.jpeg" alt="" /></span>
+							<p>StackOverflow entered the programming world in 2009, just as my career was taking off, and quickly became an indispensable tool for coders like me. It wasn’t just a place to ask questions—it was a treasure trove of reusable code snippets, tips, and insights that could be adapted to fit your own programs. It felt like the ultimate safety net for developers, offering instant access to a global network of expertise.</p>
+							<p>The chart below tells the story of how StackOverflow's impact spread across programming languages, becoming so influential that the number of posts tagged for each language started serving as a barometer for language popularity. Each tagged post represented not just curiosity, but an entire community buzzing with activity around that language. For over a decade, the volume of questions and discussions soared as coders tapped into its resources.</p>
+							<p>And then, starting in May 2021, the tide began to turn. Post activity plummeted with shocking speed, reaching lows within just four years that hadn’t been seen since the platform’s earliest days. It raises the question: what caused such a steep decline for a platform once synonymous with programming collaboration?</p>
+							<hr>
+							<h3><b>StackOverflow Usage Over Time</b></h3>
+							<!-- Render the Plotly chart -->
+							<div class="chart-container">{{ plot_html|safe }}</div>
+							<hr>
+							<p>The hard truth is that AI, and specifically chatbots designed to answer coding questions, have now become part of our reality. Two key milestones led to this transformation: first, the introduction of Codex, the initial attempt to use GPT-3 for creating a bot tailored specifically for coding, and then, slightly more than a year later, the official public release of ChatGPT.</p>
+							<p>Speaking from experience, chatbots are not perfect and can sometimes be frustrating, with their occasional wrong or incomplete answers. However, even with their limitations, they are far faster and more efficient than posting a question on a forum and waiting for a response. On forums, the back-and-forth can take days, leaving you stalled in your progress until a real solution finally emerges. That downtime can be painfully unproductive.</p>
+							<p>With chatbots, feedback is immediate. They can offer solutions or suggestions tailored to fit into your existing code, giving you something to work with and debug. In most cases, you'll find a workable solution in just a few hours. Plus, you won't have to deal with the potential negativity of forums—no one berating you for asking a question poorly or for using incorrect syntax. Because of this, chatbots have become the go-to solution for coders who are stuck.</p>
+							<p>Will this spell the end of platforms like StackOverflow? That remains to be seen.</p>
+						</div>
+					</section>
+
+{% include "footer.html" %}
+
+		<!-- Scripts -->
+			<script src="static/assets/js/jquery.min.js"></script>
+			<script src="static/assets/js/browser.min.js"></script>
+			<script src="static/assets/js/breakpoints.min.js"></script>
+			<script src="static/assets/js/util.js"></script>
+			<script src="static/assets/js/main.js"></script>
+
+	</body>
+</html>

@@ -21,6 +21,8 @@ from quiz_call import QuizCall
 from contact_manager import ContactManager
 from eeg_rfc_class import EegEyeModel
 from home_price_ann_class import HousePriceModel
+import pandas as pd
+import plotly.graph_objects as go
 
 load_dotenv()
 
@@ -201,6 +203,86 @@ def home_prices():
         home_val = f"${prediction[0][0]:,.2f}"
 
     return render_template('homeprices.html', home_val=home_val)
+
+@app.route('/data-viz')
+def data_viz():
+        # Load and process the dataset
+        dataset = pd.read_csv('static/data/StackOverflow_programming_language_tags.csv')
+        reshaped_dataset = dataset.pivot(index='m', columns='TagName', values='Unnamed: 2')
+        reshaped_dataset = reshaped_dataset.fillna(0)
+        roll_df = reshaped_dataset.rolling(window=12).mean()
+
+        # Create the Plotly chart
+        fig = go.Figure()
+
+        # Add a line for each column in the roll_df DataFrame
+        for column in roll_df.columns:
+            fig.add_trace(go.Scatter(
+                x=roll_df.index,
+                y=roll_df[column],
+                mode='lines',
+                name=column
+            ))
+
+        # Add markers for Codex (June 2021) and ChatGPT (November 2022)
+        fig.add_trace(go.Scatter(
+            x=["2021-06-01"],  # Codex introduction date
+            y=[roll_df.max().max() * 0.95],  # Place marker at max y-value
+            mode='markers+text',
+            marker=dict(size=10, color='cyan'),
+            text=["Codex Introduced"],
+            textposition="top center",
+            textfont=dict(color='cyan', size=14),
+            name="Codex Marker"
+        ))
+        fig.add_trace(go.Scatter(
+            x=["2022-11-01"],  # ChatGPT introduction date
+            y=[roll_df.max().max() * 0.80],  # Slightly lower y-value to avoid overlap
+            mode='markers+text',
+            marker=dict(size=10, color='pink'),
+            text=["ChatGPT Introduced"],
+            textposition="top center",
+            textfont=dict(color='pink', size=14),
+            name="ChatGPT Marker"
+        ))
+
+        fig.update_layout(
+            width=1200,  # Make the chart wider
+            height=600,  # Increase vertical height to avoid squashing
+            margin=dict(t=40, b=50, l=50, r=50),  # Reduce top (t) and set other margins
+            xaxis=dict(
+                title='Date',
+                title_font=dict(size=14, color='white'),
+                tickfont=dict(size=14, color='white'),
+                gridcolor='darkgray',  # Set x-axis gridline color
+                gridwidth=0.75  # Adjust x-axis gridline thickness
+            ),
+            yaxis=dict(
+                title='Number of posts',
+                title_font=dict(size=14, color='white'),
+                tickfont=dict(size=14, color='white'),
+                gridcolor='darkgray',  # Set y-axis gridline color
+                gridwidth=0.75  # Adjust y-axis gridline thickness
+            ),
+            legend=dict(
+                font=dict(size=14, color='white'),
+                orientation="v",  # Vertical layout for the legend
+                x=0,  # Position the legend on the far left
+                xanchor="left",  # Anchor the legend to the left
+                y=0.75,  # Center the legend vertically
+                yanchor="middle",  # Anchor the legend to the vertical middle
+                bgcolor="rgba(0,0,0,0.7)" # Make the legend background partially opaque
+            ),
+            plot_bgcolor='black',  # Change plot area background to black
+            paper_bgcolor='black'  # Change overall chart background to black
+        )
+
+        # Convert the Plotly chart to an HTML div
+        plot_html = fig.to_html(full_html=False)
+
+        # Pass the chart HTML to the template
+        return render_template('data_viz.html', plot_html=plot_html)
+
 
 @app.route('/contact', methods=["GET", "POST"])
 def contact():
